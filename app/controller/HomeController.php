@@ -9,4 +9,17 @@ class HomeController extends Controller
         ];
         $this->view('pages/welcome', $data);
     }
+
+    public function create()
+    {
+        
+    }
+
+    public function edit ($id){
+
+    }
+
+    public function delete($id){
+
+    }
 }
