@@ -65,14 +65,36 @@
             </div>
           </div>
 
-          
+          <!-- Deskripsi Motor -->
+          <div class="mt-6">
+            <h2 class="text-lg font-medium text-gray-700">Deskripsi Motor</h2>
+            <div id="deskripsi_motor" class="mt-1 px-3 py-2 bg-gray-100 border border-gray-300 rounded-md">
+              <!-- Input untuk mengunggah gambar -->
+              <div>
+                <input type="file" accept="image/*" onchange="previewImage(this, 'previewImage')"> <br>
+                <img id="previewImage" src="" alt="Preview Image" style="max-width: 200px;"> <br>
+                <!-- Textarea untuk deskripsi -->
+                <textarea id="deskripsiTextarea" class="mt-2 px-3 py-2 w-full border border-gray-300 rounded-md" placeholder="Deskripsi"></textarea>
+              </div>
+              <!-- Tombol Save dan Edit -->
+              <div class="flex mt-2 space-x-4">
+                <button id="saveButton" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Save</button>
+                <button id="editButton" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Edit</button>
+              </div>
+            </div>
+          </div>
 
           <!-- Table see (https://tailwindui.com/components/application-ui/lists/tables) -->
           <div class="w-full flex justify-between">
-          <h3 class="mt-6 text-xl">Rental</h3>
-          <a href="<?= BASE_URL . '/rental/create' ?>">
-          <button>Tambah data</button>
-            </a>
+            <h3 class="mt-6 text-xl">Rental</h3>
+            <div class="flex items-center space-x-2"> <!-- Baris baru untuk tombol "Tambah data" -->
+                <a href="<?= BASE_URL . '/rental/create' ?>">
+                    <button class="border border-blue-500 text-white bg-blue-500 rounded-md px-4 py-2 hover:bg-blue-600 hover:border-blue-600">Tambah data</button>
+                </a>
+                <!-- Tambahkan spasi vertikal -->
+                <div class="border-t border-gray-300 h-0 w-0"></div>
+                <!-- Tambahkan elemen lainnya di sini jika diperlukan -->
+            </div>
           </div>
           
           <div class="flex flex-col mt-6">
@@ -104,14 +126,18 @@
                           scope="col"
                           class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                         >
-                          Jenis Motor
+                          Jenis Biaya
                         </th>
                         <th
                           scope="col"
                           class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
                         >
-                          Aksi
+                          Jenis Motor
                         </th>
+                        <th
+                          scope="col"
+                          class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                        ></th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -136,9 +162,15 @@
                             </span>
                           </td>
                           <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap"><?= $rentals['total_biaya'] ?></td>
+                          <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                            <?php if(isset($rentals['jenis_motor_id'])): ?>
+                              <?= $rentals['jenis_motor_id'] ?>
+                            <?php endif; ?>
+                          </td>
                           <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                          <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>  
-                          <a href="#" class="text-indigo-600 hover:text-indigo-900">Hapus</a>
+                          <a href="<?= BASE_URL . '/rental/edit/' . $rentals['id_penyewaan'] ?>" class="text-indigo-600 hover:text-indigo-900">Edit</a>  
+                          <!-- Tombol Hapus dengan konfirmasi -->
+                          <a href="<?= BASE_URL . '/rental/delete/' . $rentals['id_penyewaan'] ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')" class="text-red-600 hover:text-red-900">Hapus</a>
                           </td>
                         </tr>
                       <?php endforeach; ?>
@@ -235,6 +267,22 @@
           },
           isSettingsPanelOpen: false,
           isSearchBoxOpen: false,
+        }
+      }
+
+      // Fungsi untuk menampilkan preview gambar
+      function previewImage(input, imgId) {
+        const preview = document.getElementById(imgId);
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+            preview.src = e.target.result;
+          }
+
+          reader.readAsDataURL(input.files[0]); // Convert to base64 string
+        } else {
+          preview.src = "";
         }
       }
     </script>

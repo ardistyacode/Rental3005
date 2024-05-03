@@ -35,4 +35,5 @@ class Rental extends Model {
         ];
         return $this->insertData($table);
     }
+
 }

@@ -76,6 +76,55 @@ class Model
         $query = "INSERT INTO {$this->tableName} ($kolom) VALUES ($param)";
         return $this->qry($query, $columnValue);
     }
+    
+    public function editOrSaveData($data = array(), $id = null){
+        if(empty($data)){
+            return false;
+        }
+
+        $columnValue = [];
+        $kolom = [];
+        $param = [];
+        $query = "";
+
+        // Membangun query berdasarkan apakah ID tersedia atau tidak
+        if($id === null){
+            // Jika tidak ada ID, maka lakukan operasi insert
+            foreach ($data as $key => $value){
+                array_push($kolom, $key);
+                array_push($columnValue, $value);
+                array_push($param, "?");
+            }
+            $kolom = implode(", ", $kolom);
+            $param = implode(", ", $param);
+            $query = "INSERT INTO {$this->tableName} ($kolom) VALUES ($param) ON DUPLICATE KEY UPDATE ";
+            foreach ($data as $key => $value){
+                $query .= "$key = VALUES($key), ";
+            }
+        } else {
+            // Jika ID tersedia, maka lakukan operasi update
+            foreach ($data as $key => $value){
+                array_push($kolom, $key ."= ?");
+                array_push($columnValue, $value);
+            }
+            $kolom = implode(", ", $kolom);
+            $query = "UPDATE {$this->tableName} SET $kolom WHERE id = ?";
+            array_push($columnValue, $id);
+        }
+
+        // Menghapus koma ekstra pada akhir query
+        $query = rtrim($query, ", ");
+
+        // Menjalankan query dengan nilai yang diperlukan
+        return $this->qry($query, $columnValue);
+    }
+
+    public function getDataById($id){
+        $column = implode(',', $this->column);
+        $query = "SELECT $column FROM {$this->tableName} WHERE id = ?";
+        $paramValue = [$id];
+        return $this->qry($query, $paramValue);
+    }
 
     public function updateData($data = array(), $param=array()){
         if(empty($data)){

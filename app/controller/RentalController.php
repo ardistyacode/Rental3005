@@ -1,10 +1,12 @@
-<?php 
+<?php
 
 class RentalController extends Controller {
     private $rental;
+
     public function __construct() {
         $this->rental = $this->model('Rental');
     }
+
     public function index(){
         $data = [
             'judul' => 'Rentall PS Ardist',
@@ -22,41 +24,69 @@ class RentalController extends Controller {
 
         $this->view('pages/rental/create', $data);
     }
+
+    public function edit($id){
+        // Mengambil data rental berdasarkan ID
+        $rental = $this->rental->getDataById($id);
+
+        // Memeriksa apakah data rental ditemukan
+        if (!$rental) {
+            // Jika tidak ditemukan, mungkin hendak dilakukan redirect atau menampilkan pesan kesalahan
+            echo "Data rental tidak ditemukan";
+            // Atau bisa diarahkan ke halaman list
+            // $this->redirect('/rental');
+            exit;
+        }
+
+        // Menyiapkan data untuk ditampilkan dalam formulir edit
+        $data = [
+            'judul' => 'Rentall PS Ardist - Edit Data',
+            'rental' => $rental
+        ];
+
+        // Render view untuk formulir edit dengan data rental
+        $this->view('pages/rental/edit', $data);
+    }
+
+    public function deleteConfirmation($id){
+        // Mengambil data rental berdasarkan ID untuk ditampilkan dalam konfirmasi
+        $rental = $this->rental->getDataById($id);
+
+        if (!$rental) {
+            // Jika data tidak ditemukan, bisa lakukan redirect atau tampilkan pesan error
+            echo "Data tidak ditemukan";
+            // Atau bisa diarahkan ke halaman list
+            // $this->redirect('/rental');
+            exit;
+        }
+
+        $data = [
+            'judul' => 'Konfirmasi Penghapusan',
+            'rental' => $rental
+        ];
+
+        $this->view('pages/rental/confirm_delete', $data);
+    }
+
+    public function delete($id){
+        // Proses penghapusan data berdasarkan ID
+        $deleted = $this->rental->deleteData($id);
+
+        if($deleted){
+            // Jika penghapusan berhasil, arahkan kembali ke halaman list atau halaman lainnya
+            header('Location: ' . BASE_URL . '/rental');
+            exit;
+        } else {
+            // Jika penghapusan gagal, tampilkan pesan error atau lakukan tindakan lainnya
+            echo 'Delete gagal';
+        }
+    }
+
     public function store(){
-        // $fields = [
-        //     'nama_penyewa' => 'required',
-        //     'jumlah_hari' => 'int',
-        //     'total_biaya' => 'int',
-        //     'jenis_motor_id' => 'int',
-        // ];
-
-        // $message = [
-        //     'nama_penyewa' => [
-        //         'required' => 'Nama penyewa harus diisi',
-        //     ], 
-        // ];
-
-        // [$inputs, $errors] = $this->filter($_POST, $fields, $message);
-
-        // if (($inputs['jenis_motor_id']) == '') {
-        //     $inputs['jenis_motor_id'] = 1;
-        // }
-
-        // var_dump($inputs);
-
-        // if ($errors) {
-        //     Message::setFlash('error', 'Data gagal ditambahkan', $errors[0], $inputs);
-        //     $this->redirect('rental/create');
-        // }
-
-        // $proc = $this->rental->insert($inputs);
-        // if ($proc) {
-        //     Message::setFlash('success', 'Berhasil!', 'Data berhasil ditambahkan', $inputs);
-        //     $this->redirect('rental/list');
-        // }
+        // Validasi data
 
         if ($_SERVER['REQUEST_METHOD'] == "POST"){
-            // var_dump($_POST );
+            // Proses penyimpanan data
             $namaPenyewa = $_POST['nama_penyewa'];
             $jumlahHari = $_POST['jumlah_hari'];
             $totalBiaya = $_POST['total_biaya'];
@@ -76,10 +106,7 @@ class RentalController extends Controller {
                 echo 'Data gagal disimpan';
             }
         }
-
-
-
-
-        // $proc = $this->rental->insert($data);
     }
 }
+
+?>

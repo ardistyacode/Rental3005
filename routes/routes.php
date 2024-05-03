@@ -28,6 +28,11 @@ class Routes
         $router->get('/rental', ['RentalController', 'index']);
         $router->get('/rental/create', ['RentalController', 'create']);
         $router->post('/rental/store', ['RentalController', 'store']);
+        $router->get('/crud/edit/{id}', ['FormController', 'edit']);
+        $router->get('/crud/edit/{id}', ['RentalController', 'edit']);
+        $router->get('/rental/delete/{id}', ['RentalController', 'delete']);
+        $router->get('/rental/confirm_delete/{id}', 'RentalController@deleteConfirmation');
+
         $router->run();
     }
 }
