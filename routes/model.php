@@ -119,7 +119,7 @@ class Model
         return $this->qry($query, $columnValue);
     }
 
-    public function getDataById($id){
+    public function getDataById($id){ // disini akan mengambil data sesuai id saja
         $column = implode(',', $this->column);
         $query = "SELECT $column FROM {$this->tableName} WHERE id = ?";
         $paramValue = [$id];

@@ -108,5 +108,7 @@ class RentalController extends Controller {
         }
     }
 }
+// crud edit, create, delete
+ 
 
 ?>

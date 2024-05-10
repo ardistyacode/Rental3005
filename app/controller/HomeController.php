@@ -23,3 +23,5 @@ class HomeController extends Controller
 
     }
 }
+
+// untuk crud nya masih ada create, edit, hapus
