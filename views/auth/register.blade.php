@@ -6,13 +6,13 @@ echo '
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <title>Login</title>
+    <title>Register</title>
   </head>
   <body>
     <div class="container">
       <div class="box form-box">
-        <header>Login</header>
-        <form id="loginForm" action="#" method="post">
+        <header>Sign Up</header>
+        <form action="" method="post">
           <div class="field input">
             <label for="username">Username</label>
             <input
@@ -23,8 +23,20 @@ echo '
               required
             />
           </div>
+
           <div class="field input">
-            <label for="password">Password</label>
+            <label for="username">Email</label>
+            <input
+              type="text"
+              name="email"
+              id="email"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="field input">
+            <label for="username">Password</label>
             <input
               type="password"
               name="password"
@@ -33,23 +45,22 @@ echo '
               required
             />
           </div>
+
           <div class="field">
             <input
               type="submit"
               class="btn"
               name="submit"
-              value="Login"
+              value="Sign Up"
               required
             />
           </div>
           <div class="links">
-            Don\'t have an account? <a href="register.html">Sign Up Now</a>
+            already have an account? <a href="login.html">Log In Now</a>
           </div>
         </form>
       </div>
     </div>
-
-    <script src="script.js"></script>
   </body>
 </html>
 
